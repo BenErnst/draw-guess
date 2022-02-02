@@ -22,9 +22,6 @@ export const Canvas = forwardRef((props, ref) => {
             onMouseUp={onFinishDrawing}
             onMouseMove={onDraw}
             ref={ref}
-            // touchstart={onStartDrawing}
-            // touchend={onFinishDrawing}
-            // touchmove={onDraw}
             style={{
                 width: `${window.innerWidth / 2}px`,
                 height: `${window.innerHeight / 2}px`,
