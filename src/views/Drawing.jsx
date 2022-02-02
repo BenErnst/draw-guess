@@ -39,10 +39,12 @@ export const Drawing = () => {
         ctxRef.current = ctx;
     }, [gameSessions]);
 
-    const startDrawing = ({ nativeEvent }) => {
-        const { offsetX, offsetY } = nativeEvent;
+    const startDrawing = (ev) => {
+        // const { offsetX, offsetY } = ev.nativeEvent;
+        const pos = getEvPos(ev);
         ctxRef.current.beginPath();
-        ctxRef.current.moveTo(offsetX, offsetY);
+        // ctxRef.current.moveTo(offsetX, offsetY);
+        ctxRef.current.moveTo(pos.x, pos.y);
         setIsDrawing(true);
     };
 
@@ -51,11 +53,34 @@ export const Drawing = () => {
         setIsDrawing(false);
     };
 
-    const draw = ({ nativeEvent }) => {
+    const draw = (ev) => {
         if (!isDrawing) return;
-        const { offsetX, offsetY } = nativeEvent;
-        ctxRef.current.lineTo(offsetX, offsetY);
+        // const { offsetX, offsetY } = ev.nativeEvent;
+        console.log('draw');
+        const pos = getEvPos(ev);
+        // ctxRef.current.lineTo(offsetX, offsetY);
+        ctxRef.current.lineTo(pos.x, pos.y);
         ctxRef.current.stroke();
+    };
+
+    const getEvPos = (ev) => {
+        const touchEvs = ['touchstart', 'touchend', 'touchmove'];
+        var pos;
+        if (touchEvs.includes(ev.type)) {
+            console.log(ev.type);
+            ev.preventDefault();
+            ev = ev.changedTouches[0];
+            pos = {
+                x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
+                y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
+            };
+        } else {
+            pos = {
+                x: ev.nativeEvent.offsetX,
+                y: ev.nativeEvent.offsetY,
+            };
+        }
+        return pos;
     };
 
     const endGame = (guesser, points) => {
