@@ -34,7 +34,6 @@ export const WordChoosing = () => {
     return (
         <section>
             <h1>Hey {player.name}!</h1>
-            <h2>You are the {player.type}!</h2>
             {wordsComponent}
             <button onClick={onSetWords}>Get Other Words</button>
         </section>

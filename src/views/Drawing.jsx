@@ -75,7 +75,6 @@ export const Drawing = () => {
     return gameSessions.length && player ? (
         <section>
             <h1>Drawing here</h1>
-            {/* <h2>{gameSessions[gameSessions.length - 1].word.txt}</h2> */}
             <h2>{wordRef.current.txt}</h2>
             <div>
                 <Canvas

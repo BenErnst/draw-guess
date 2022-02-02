@@ -13,6 +13,7 @@ export const Canvas = forwardRef((props, ref) => {
                 width: `${window.innerWidth / 2}px`,
                 height: `${window.innerHeight / 2}px`,
                 background: 'lightgray',
+                touchAction: 'manipulation',
             }}
         />
     );
