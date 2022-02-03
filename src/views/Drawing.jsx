@@ -10,7 +10,7 @@ import { GuesserControls } from '../cmps/GuesserControls';
 import { canvasService } from '../services/canvasService.js';
 
 export const Drawing = () => {
-    const [isDrawing, setIsDrawing] = useToggle(false);
+    // const [isDrawing, setIsDrawing] = useToggle(false);
     const history = useHistory();
 
     const { gameSessions } = useSelector((state) => state.gameModule);
@@ -21,6 +21,7 @@ export const Drawing = () => {
     const canvasRef = useRef(null);
     const ctxRef = useRef(null);
     // const centerRef = useRef(null);
+    const touchEvsRef = useRef(['touchstart', 'touchend', 'touchmove']);
 
     // const [circle, setCircle] = useState(null);
     // const [startPos, setStartPos] = useState(null);
@@ -48,17 +49,17 @@ export const Drawing = () => {
         // setCircle(circle);
         // renderCircle();
 
-        canvas.addEventListener('touchstart', (ev) => {
-            console.log(ev.type);
-            startDrawing(ev);
-        });
-        canvas.addEventListener('touchend', () => {
-            finishDrawing();
-        });
-        canvas.addEventListener('touchmove', (ev) => {
-            console.log(ev.type);
-            draw(ev);
-        });
+        // canvas.addEventListener('touchstart', (ev) => {
+        //     console.log(ev.type);
+        //     startDrawing(ev);
+        // });
+        // canvas.addEventListener('touchend', () => {
+        //     finishDrawing();
+        // });
+        // canvas.addEventListener('touchmove', (ev) => {
+        //     console.log(ev.type);
+        //     draw(ev);
+        // });
     }, [gameSessions]);
 
     // const renderCircle = () => {
@@ -86,12 +87,12 @@ export const Drawing = () => {
         ctxRef.current.beginPath();
         // ctxRef.current.moveTo(offsetX, offsetY);
         ctxRef.current.moveTo(evPos.x, evPos.y);
-        setIsDrawing(true);
+        // setIsDrawing(true);
     };
 
     const finishDrawing = () => {
         ctxRef.current.closePath();
-        setIsDrawing(false);
+        // setIsDrawing(false);
     };
 
     const draw = (ev) => {
@@ -128,9 +129,9 @@ export const Drawing = () => {
     };
 
     const getEvPos = (ev) => {
-        const touchEvs = ['touchstart', 'touchend', 'touchmove'];
+        // const touchEvs = ['touchstart', 'touchend', 'touchmove'];
         var pos;
-        if (touchEvs.includes(ev.type)) {
+        if (touchEvsRef.current.includes(ev.type)) {
             ev.preventDefault();
             console.log(ev.type);
             ev = ev.changedTouches[0];
@@ -170,6 +171,7 @@ export const Drawing = () => {
                     onStartDrawing={startDrawing}
                     onFinishDrawing={finishDrawing}
                     onDraw={draw}
+                    touchEvs={touchEvsRef.current}
                     ref={canvasRef}
                 />
             </div>

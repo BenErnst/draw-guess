@@ -1,22 +1,12 @@
 import { forwardRef, useEffect } from 'react';
 
 export const Canvas = forwardRef((props, ref) => {
-    const { onStartDrawing, onFinishDrawing, onDraw } = props;
+    const { onStartDrawing, onFinishDrawing, onDraw, touchEvs } = props;
 
-    // useEffect(() => {
-    //     // console.log(ref.current);
-    //     ref.current.addEventListener('touchstart', (ev) => {
-    //         console.log(ev.type);
-    //         onStartDrawing(ev);
-    //     });
-    //     ref.current.addEventListener('touchend', () => {
-    //         onFinishDrawing();
-    //     });
-    //     ref.current.addEventListener('touchmove', (ev) => {
-    //         console.log(ev.type);
-    //         onDraw(ev);
-    //     });
-    // }, []);
+    useEffect(() => {
+        const funcs = [onStartDrawing, onFinishDrawing, onDraw];
+        funcs.forEach((func, i) => ref.current.addEventListener(touchEvs[i], func));
+    }, []);
 
     return (
         <canvas
