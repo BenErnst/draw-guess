@@ -20,10 +20,10 @@ export const Drawing = () => {
     const wordRef = useRef('');
     const canvasRef = useRef(null);
     const ctxRef = useRef(null);
-    const centerRef = useRef(null);
+    // const centerRef = useRef(null);
 
-    const [circle, setCircle] = useState(null);
-    const [startPos, setStartPos] = useState(null);
+    // const [circle, setCircle] = useState(null);
+    // const [startPos, setStartPos] = useState(null);
 
     useEffect(() => {
         dispatch(loadGameSessions());
@@ -43,33 +43,45 @@ export const Drawing = () => {
         ctx.lineWidth = 3;
         ctxRef.current = ctx;
 
-        centerRef.current = canvasService.getCenter(canvas);
-        const circle = canvasService.getCircle(centerRef.current);
-        setCircle(circle);
-        renderCircle();
+        // centerRef.current = canvasService.getCenter(canvas);
+        // const circle = canvasService.getCircle(centerRef.current);
+        // setCircle(circle);
+        // renderCircle();
+
+        canvas.addEventListener('touchstart', (ev) => {
+            console.log(ev.type);
+            startDrawing(ev);
+        });
+        canvas.addEventListener('touchend', () => {
+            finishDrawing();
+        });
+        canvas.addEventListener('touchmove', (ev) => {
+            console.log(ev.type);
+            draw(ev);
+        });
     }, [gameSessions]);
 
-    const renderCircle = () => {
-        if (!circle) return;
-        // console.log('🚀 ~ file: Drawing.jsx ~ line 54 ~ renderCircle ~ circle', circle);
-        const { pos, color, size } = circle;
-        ctxRef.current.beginPath();
-        ctxRef.current.lineWidth = '6';
-        ctxRef.current.arc(pos.x, pos.y, size, 0, 2 * Math.PI);
-        ctxRef.current.strokeStyle = 'black';
-        ctxRef.current.stroke();
-        ctxRef.current.fillStyle = color;
-        ctxRef.current.fill();
-    };
+    // const renderCircle = () => {
+    //     if (!circle) return;
+    //     // console.log('🚀 ~ file: Drawing.jsx ~ line 54 ~ renderCircle ~ circle', circle);
+    //     const { pos, color, size } = circle;
+    //     ctxRef.current.beginPath();
+    //     ctxRef.current.lineWidth = '6';
+    //     ctxRef.current.arc(pos.x, pos.y, size, 0, 2 * Math.PI);
+    //     ctxRef.current.strokeStyle = 'black';
+    //     ctxRef.current.stroke();
+    //     ctxRef.current.fillStyle = color;
+    //     ctxRef.current.fill();
+    // };
 
     const startDrawing = (ev) => {
         // const { offsetX, offsetY } = ev.nativeEvent;
 
         const evPos = getEvPos(ev);
-        if (!circle) return;
-        const isCircleClicked = canvasService.isCircleClicked(evPos, circle);
-        if (!isCircleClicked) return;
-        setStartPos(evPos);
+        // if (!circle) return;
+        // const isCircleClicked = canvasService.isCircleClicked(evPos, circle);
+        // if (!isCircleClicked) return;
+        // setStartPos(evPos);
 
         ctxRef.current.beginPath();
         // ctxRef.current.moveTo(offsetX, offsetY);
@@ -83,36 +95,36 @@ export const Drawing = () => {
     };
 
     const draw = (ev) => {
-        if (!isDrawing) return;
+        // if (!isDrawing) return;
         // const { offsetX, offsetY } = ev.nativeEvent;
         console.log('draw');
         const evPos = getEvPos(ev);
         // ctxRef.current.lineTo(offsetX, offsetY);
 
-        const dx = evPos.x - startPos.x;
-        const dy = evPos.y - startPos.y;
+        // const dx = evPos.x - startPos.x;
+        // const dy = evPos.y - startPos.y;
 
-        setStartPos(evPos);
+        // setStartPos(evPos);
 
-        const circle = canvasService.getCircle(startPos);
-        circle.pos.x += dx;
-        circle.pos.y += dy;
-        setCircle(circle);
+        // const circle = canvasService.getCircle(startPos);
+        // circle.pos.x += dx;
+        // circle.pos.y += dy;
+        // setCircle(circle);
 
         // Render Canvas:
-        ctxRef.current.save();
-        ctxRef.current.fillStyle = 'lightgray';
-        ctxRef.current.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+        // ctxRef.current.save();
+        // ctxRef.current.fillStyle = 'lightgray';
+        // ctxRef.current.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         ctxRef.current.lineTo(evPos.x, evPos.y);
         ctxRef.current.stroke();
-        renderCircle();
+        // renderCircle();
         // ctxRef.current.restore();
         //
 
         // ctxRef.current.lineTo(evPos.x, evPos.y);
         // ctxRef.current.stroke();
 
-        ctxRef.current.restore();
+        // ctxRef.current.restore();
     };
 
     const getEvPos = (ev) => {
@@ -120,7 +132,7 @@ export const Drawing = () => {
         var pos;
         if (touchEvs.includes(ev.type)) {
             ev.preventDefault();
-            console.log(ev);
+            console.log(ev.type);
             ev = ev.changedTouches[0];
             pos = {
                 x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
