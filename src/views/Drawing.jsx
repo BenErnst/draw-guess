@@ -50,6 +50,8 @@ export const Drawing = () => {
         ctx.lineWidth = 3;
         ctxRef.current = ctx;
 
+        const game = gameSessions[gameSessions.length - 1];
+        if (game.artURL) renderArt(ctxRef.current, canvas);
         // renderArt(ctxRef.current, canvas);
 
         // centerRef.current = canvasService.getCenter(canvas);
