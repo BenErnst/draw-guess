@@ -50,7 +50,7 @@ export const Drawing = () => {
         ctx.lineWidth = 3;
         ctxRef.current = ctx;
 
-        renderArt(ctxRef.current, canvas);
+        // renderArt(ctxRef.current, canvas);
 
         // centerRef.current = canvasService.getCenter(canvas);
         // const circle = canvasService.getCircle(centerRef.current);
@@ -153,7 +153,7 @@ export const Drawing = () => {
 
     const renderArt = (ctx, canvas) => {
         const game = gameSessions[gameSessions.length - 1];
-        console.log(game);
+        // console.log(game);
         const img = new Image();
         img.src = game.artURL;
         ctx.drawImage(img, 0, 0, canvas.width / 2, canvas.height / 2);
