@@ -4,7 +4,13 @@ import { useRef, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Canvas } from '../cmps/Canvas';
 import { useEffectUpdate } from '../hooks/useEffectUpdate';
-import { loadGameSessions, setGameData, startNewGame } from '../store/actions/gameActions';
+import {
+    loadGameSessions,
+    setGameData,
+    startNewGame,
+    saveArt,
+    loadArt,
+} from '../store/actions/gameActions';
 import { switchPlayers } from '../store/actions/playerActions';
 import { GuesserControls } from '../cmps/GuesserControls';
 import { canvasService } from '../services/canvasService.js';
@@ -44,22 +50,12 @@ export const Drawing = () => {
         ctx.lineWidth = 3;
         ctxRef.current = ctx;
 
+        renderArt(ctxRef.current, canvas);
+
         // centerRef.current = canvasService.getCenter(canvas);
         // const circle = canvasService.getCircle(centerRef.current);
         // setCircle(circle);
         // renderCircle();
-
-        // canvas.addEventListener('touchstart', (ev) => {
-        //     console.log(ev.type);
-        //     startDrawing(ev);
-        // });
-        // canvas.addEventListener('touchend', () => {
-        //     finishDrawing();
-        // });
-        // canvas.addEventListener('touchmove', (ev) => {
-        //     console.log(ev.type);
-        //     draw(ev);
-        // });
     }, [gameSessions]);
 
     // const renderCircle = () => {
@@ -96,9 +92,10 @@ export const Drawing = () => {
     };
 
     const draw = (ev) => {
+        if (player.type === 'guesser') return;
         // if (!isDrawing) return;
         // const { offsetX, offsetY } = ev.nativeEvent;
-        console.log('draw');
+        // console.log('draw');
         const evPos = getEvPos(ev);
         // ctxRef.current.lineTo(offsetX, offsetY);
 
@@ -133,7 +130,7 @@ export const Drawing = () => {
         var pos;
         if (touchEvsRef.current.includes(ev.type)) {
             ev.preventDefault();
-            console.log(ev.type);
+            // console.log(ev.type);
             ev = ev.changedTouches[0];
             pos = {
                 x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
@@ -148,6 +145,20 @@ export const Drawing = () => {
         return pos;
     };
 
+    const onSaveArt = () => {
+        var dataURL = canvasRef.current.toDataURL();
+        dispatch(saveArt(dataURL));
+        // canvasService.saveDrawing(dataURL);
+    };
+
+    const renderArt = (ctx, canvas) => {
+        const game = gameSessions[gameSessions.length - 1];
+        console.log(game);
+        const img = new Image();
+        img.src = game.artURL;
+        ctx.drawImage(img, 0, 0, canvas.width / 2, canvas.height / 2);
+    };
+
     const endGame = (guesser, points) => {
         dispatch(setGameData(guesser, points));
         dispatch(startNewGame());
@@ -158,7 +169,7 @@ export const Drawing = () => {
     const drawerControls = (
         <div>
             <button onClick={history.goBack}>⬅Words</button>
-            <button>Save</button>
+            <button onClick={onSaveArt}>Save</button>
         </div>
     );
 

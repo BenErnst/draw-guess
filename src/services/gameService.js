@@ -6,7 +6,9 @@ export const gameService = {
     query,
     saveWord,
     saveGameData,
-    startNewGame
+    startNewGame,
+    saveArt,
+    // loadArt
 }
 
 const STORAGE_KEY = 'gameSessions';
@@ -44,6 +46,17 @@ function startNewGame() {
     return Promise.resolve([ ...gameSessions ]);
 }
 
+function saveArt(dataURL) {
+    let gameSessionToEdit = _getSessionCopy();
+    gameSessionToEdit.artURL = dataURL;
+    return saveGameSession(gameSessionToEdit);
+}
+
+// function loadArt(id) {
+//     const gameSession = gGameSessions.find(session => session._id === id);   
+//     return Promise.resolve(gameSession.artURL);
+// }
+
 function _getSessionCopy() {
     const lastSession = gGameSessions[gGameSessions.length - 1];
     return JSON.parse(JSON.stringify(lastSession));
@@ -74,5 +87,6 @@ function _getNewGameSession() {
                 points: null
             }
         },
+        artURL: ''
     }
 }

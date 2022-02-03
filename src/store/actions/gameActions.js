@@ -23,6 +23,17 @@ export function setWord(word) {
     }
 }
 
+export function saveArt(dataURL) {
+    return async (dispatch) => {
+        try {
+            const savedSession = await gameService.saveArt(dataURL);
+            dispatch({type: 'SAVE_GAME_SESSION', savedSession});
+        } catch (err) {
+            console.log('Error in saveArt Action:', err);
+        }
+    }
+}
+
 export function setGameData(guesser, points) {
     return async (dispatch) => {
         try {
