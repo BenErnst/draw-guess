@@ -12,11 +12,11 @@ export function loadPlayer() {
     }
 }
 
-export function savePlayer(player) {
-    return async () => {
+export function savePlayer(playerToSave) {
+    return async (dispatch) => {
         try {
-            await playerService.savePlayer(player);
-            console.log(`Player with id ${player.id} has been Saved Succefully`);
+            const player = await playerService.savePlayer(playerToSave);
+            dispatch({ type: 'SET_PLAYER', player });
         } catch (err) {
             console.log('Error in savePlayer Action:', err);
         }
@@ -24,10 +24,10 @@ export function savePlayer(player) {
 }
 
 export function switchPlayers() {
-    return async () => {
+    return async (dispatch) => {
         try {
-            await playerService.switchPlayers();
-            console.log(`Players have been Switched Succefully`);
+            const player = await playerService.switchPlayers();
+            dispatch({ type: 'SET_PLAYER', player });
         } catch (err) {
             console.log('Error in switchPlayers Action:', err);
         }

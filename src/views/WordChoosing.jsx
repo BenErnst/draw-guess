@@ -8,6 +8,7 @@ import { useHistory } from 'react-router-dom';
 export const WordChoosing = () => {
     const [words, setWords] = useState([]);
 
+    // const { currSession } = useSelector((state) => state.gameModule);
     const { player } = useSelector((state) => state.playerModule);
     const dispatch = useDispatch();
 
@@ -24,7 +25,9 @@ export const WordChoosing = () => {
 
     const chooseWord = (word) => {
         dispatch(setWord(word));
+
         history.push('/drawing');
+        // history.push(`/drawing/${currSession._id}`);
     };
 
     const wordsComponent = words.map((word) => (

@@ -1,6 +1,7 @@
 
 const INITIAL_STATE = {
     gameSessions: [],
+    currSession: null
 }
 
 export function gameReducer(state = INITIAL_STATE, action) {
@@ -18,6 +19,11 @@ export function gameReducer(state = INITIAL_STATE, action) {
                 gameSessions: state.gameSessions.map(session => {
                     return (session._id === action.savedSession._id) ? action.savedSession : session
                 })
+            }
+        case 'SET_CURR_SESSION':
+            return {
+                ...state,
+                currSession: { ...action.currSession }
             }
             
         // case 'ADD_ROBOT':

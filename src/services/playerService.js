@@ -27,5 +27,5 @@ function switchPlayers() {
     }
     const newType = typesMap[player.type];
     player.type = newType;
-    return savePlayer(player);
+    return Promise.resolve(savePlayer(player));
 }
