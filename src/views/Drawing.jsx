@@ -1,10 +1,11 @@
+import { socketService } from '../services/socketService';
 import { useToggle } from '../hooks/useToggle';
 import { useHistory } from 'react-router-dom';
 import { useRef, useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Canvas } from '../cmps/Canvas';
 import { useEffectUpdate } from '../hooks/useEffectUpdate';
-import { loadGameSessions, setGameData, saveArt } from '../store/actions/gameActions';
+import { loadGameSessions, setGameData, saveImg } from '../store/actions/gameActions';
 import { switchPlayers } from '../store/actions/playerActions';
 import { GuesserControls } from '../cmps/GuesserControls';
 import { canvasService } from '../services/canvasService.js';
@@ -20,6 +21,23 @@ export const Drawing = () => {
     const ctxRef = useRef(null);
     const touchEvsRef = useRef(['touchstart', 'touchend', 'touchmove']);
 
+    useEffect(() => {
+        dispatch(loadGameSessions());
+
+        // Socket:
+        socketService.on('start drawing', (evPos) => {
+            ctxRef.current.beginPath();
+            ctxRef.current.moveTo(evPos.x, evPos.y);
+        });
+        socketService.on('drawing', (evPos) => {
+            ctxRef.current.lineTo(evPos.x, evPos.y);
+            ctxRef.current.stroke();
+        });
+        socketService.on('finish drawing', () => {
+            ctxRef.current.closePath();
+        });
+    }, []);
+
     useEffectUpdate(() => {
         const canvas = canvasRef.current;
         canvas.width = window.innerWidth;
@@ -32,26 +50,37 @@ export const Drawing = () => {
         ctxRef.current = ctx;
     }, [currSession]);
 
-    const renderArt = useCallback((ctx, canvas) => {
+    const renderImg = useCallback((ctx, canvas) => {
         if (!currSession) return;
         const img = new Image();
-        img.src = currSession.artURL;
+        img.src = currSession.imgURL;
         ctx.current.drawImage(img, 0, 0, canvas.current.width / 2, canvas.current.height / 2);
     }, []);
 
     const startDrawing = (ev) => {
         const evPos = getEvPos(ev);
+
+        // Socket:
+        socketService.emit('start drawing', evPos);
+
         ctxRef.current.beginPath();
         ctxRef.current.moveTo(evPos.x, evPos.y);
     };
 
     const finishDrawing = () => {
+        // Socket:
+        socketService.emit('finish drawing');
+
         ctxRef.current.closePath();
     };
 
     const draw = (ev) => {
         if (player.type === 'guesser') return;
         const evPos = getEvPos(ev);
+
+        // Socket:
+        socketService.emit('drawing', evPos);
+
         ctxRef.current.lineTo(evPos.x, evPos.y);
         ctxRef.current.stroke();
     };
@@ -74,9 +103,9 @@ export const Drawing = () => {
         return pos;
     };
 
-    const onSaveArt = () => {
+    const onSaveImg = () => {
         var dataURL = canvasRef.current.toDataURL();
-        dispatch(saveArt(dataURL));
+        dispatch(saveImg(dataURL));
     };
 
     const endGame = (guesser, points) => {
@@ -88,7 +117,7 @@ export const Drawing = () => {
     const drawerControls = (
         <div>
             <button onClick={history.goBack}>⬅Words</button>
-            <button onClick={onSaveArt}>Save</button>
+            <button onClick={onSaveImg}>Save</button>
         </div>
     );
 

@@ -6,6 +6,9 @@ export function loadGameSessions() {
         try {
             const gameSessions = await gameService.query();
             dispatch({ type: 'SET_GAME_SESSIONS', gameSessions });
+            
+            const currSession = gameSessions[gameSessions.length - 1];
+            dispatch({type: 'SET_CURR_SESSION', currSession});
         } catch (err) {
             console.log('Error in loadGameSessions Action:', err);
         }
@@ -30,23 +33,23 @@ export function setWord(word) {
             dispatch({type: 'SAVE_GAME_SESSION', savedSession});
             
             const currSession = savedSession;
-            dispatch({type: 'SET_CURR_SESSION', currSession});
+            dispatch({type: 'SET_CURR_SESSION', currSession});            
         } catch (err) {
             console.log('Error in setWord Action:', err);
         }
     }
 }
 
-export function saveArt(dataURL) {
+export function saveImg(dataURL) {
     return async (dispatch) => {
         try {
-            const savedSession = await gameService.saveArt(dataURL);
+            const savedSession = await gameService.saveImg(dataURL);
             dispatch({type: 'SAVE_GAME_SESSION', savedSession});
 
             const currSession = savedSession;
             dispatch({type: 'SET_CURR_SESSION', currSession});
         } catch (err) {
-            console.log('Error in saveArt Action:', err);
+            console.log('Error in saveImg Action:', err);
         }
     }
 }
@@ -56,6 +59,7 @@ export function setGameData(guesser, points) {
         try {
             const savedSession = await gameService.saveGameData(guesser, points);
             dispatch({type: 'SAVE_GAME_SESSION', savedSession});
+            // dispatch({type: 'SET_CURR_SESSION', currSession: null});
         } catch (err) {
             console.log('Error in setScore Action:', err);
         }

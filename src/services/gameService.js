@@ -5,9 +5,10 @@ import { httpService } from './httpService';
 export const gameService = {
     query,
     getById,
+    saveGameSession,
     saveWord,
     saveGameData,
-    saveArt
+    saveImg
 }
 
 async function query() {
@@ -30,11 +31,15 @@ async function getById(id) {
     }
 }
 
-async function saveGameSession(gameSession) {
+async function saveGameSession(gameSession = _getNewGameSession()) {
+    // gameSession.isOn = true;
     try {
         const savedGameSession = (gameSession._id) ?
         await httpService.put(`gameSession/${gameSession._id}`, gameSession) :
         await httpService.post('gameSession/', gameSession);
+
+        console.log('savedGameSession:', savedGameSession);
+
         return savedGameSession;
     } catch (err) {
         console.log('Error in saveGameSession (front gameService):', err);
@@ -43,14 +48,14 @@ async function saveGameSession(gameSession) {
 }
 
 async function saveWord(word) {
-    let gameSession = _getNewGameSession();
-    gameSession.word = word;
-    return await saveGameSession(gameSession);
+    let gameSessionToEdit = await _getCurrSession();
+    gameSessionToEdit.word = word;
+    return await saveGameSession(gameSessionToEdit);
 }
 
-async function saveArt(dataURL) {
+async function saveImg(dataURL) {
     let gameSessionToEdit = await _getCurrSession();
-    gameSessionToEdit.artURL = dataURL;
+    gameSessionToEdit.imgURL = dataURL;
     return await saveGameSession(gameSessionToEdit);
 }
 
@@ -58,6 +63,7 @@ async function saveGameData(guesser, points) {
     let gameSessionToEdit = await _getCurrSession();
     gameSessionToEdit.guesser = guesser;
     gameSessionToEdit.score = points;
+    // gameSessionToEdit.isOn = false;
     return await saveGameSession(gameSessionToEdit);
 }
 
@@ -80,6 +86,7 @@ function _getNewGameSession() {
                 points: null
             }
         },
-        artURL: ''
+        imgURL: '',
+        // isOn: false
     }
 }

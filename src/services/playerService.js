@@ -1,5 +1,7 @@
 
 import { storageService } from './storageService.js';
+import { httpService } from './httpService';
+import { gameService } from './gameService.js';
 
 export const playerService = {
     getPlayer,
@@ -14,8 +16,14 @@ function getPlayer() {
     return Promise.resolve({ ...player });
 }
 
-function savePlayer(player) {
+async function savePlayer(player) {
     storageService.sessionStore(STORAGE_KEY, player);
+
+    // const gameSessions = await httpService.get('gameSession');
+    // const isGameOn = gameSessions.some(session => session.isOn);
+    // console.log('isGameOn:', isGameOn);
+    // if (!isGameOn) await gameService.saveGameSession();
+
     return Promise.resolve(player);
 }
 

@@ -1,9 +1,10 @@
 import { useRef, useEffect } from 'react';
+import { utilService } from '../services/utilService.js';
+import { socketService } from '../services/socketService';
 import { useForm } from '../hooks/useForm';
 import { useDispatch } from 'react-redux';
 import { savePlayer } from '../store/actions/playerActions';
 import { useHistory } from 'react-router-dom';
-import { utilService } from '../services/utilService.js';
 
 export const Home = () => {
     const [playerName, handleChange, setPlayerName] = useForm('');
@@ -19,6 +20,8 @@ export const Home = () => {
 
     const onStart = (ev) => {
         ev.preventDefault();
+        // console.log('');
+
         history.push('/waiting');
     };
 
@@ -30,6 +33,8 @@ export const Home = () => {
                 type,
             })
         );
+        // Socket:
+        socketService.emit(`${type} arrived`);
     };
 
     return (
