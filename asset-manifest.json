@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/draw-guess-frontend/static/css/main.b1bdaf28.css",
-    "main.js": "/draw-guess-frontend/static/js/main.4d6adadf.js",
+    "main.js": "/draw-guess-frontend/static/js/main.07748b1d.js",
     "static/js/787.883bfeb5.chunk.js": "/draw-guess-frontend/static/js/787.883bfeb5.chunk.js",
     "static/media/loading.gif": "/draw-guess-frontend/static/media/loading.093a6a2655342a37dc2b.gif",
     "index.html": "/draw-guess-frontend/index.html",
     "main.b1bdaf28.css.map": "/draw-guess-frontend/static/css/main.b1bdaf28.css.map",
-    "main.4d6adadf.js.map": "/draw-guess-frontend/static/js/main.4d6adadf.js.map",
+    "main.07748b1d.js.map": "/draw-guess-frontend/static/js/main.07748b1d.js.map",
     "787.883bfeb5.chunk.js.map": "/draw-guess-frontend/static/js/787.883bfeb5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.b1bdaf28.css",
-    "static/js/main.4d6adadf.js"
+    "static/js/main.07748b1d.js"
   ]
 }
