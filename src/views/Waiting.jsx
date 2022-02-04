@@ -40,11 +40,6 @@ export const Waiting = () => {
         setIsDrawerArrived(false);
     };
 
-    // useEffectUpdate(() => {
-    //     const path = player.type === 'drawer' ? '/word-choosing' : '/drawing';
-    //     history.push(path);
-    // }, [player]);
-
     return (
         <section>
             <p>Waiting View</p>
