@@ -36,7 +36,6 @@ export const Drawing = () => {
         socketService.on('finish drawing', () => {
             ctxRef.current.closePath();
         });
-        //
     }, []);
 
     useEffectUpdate(() => {
