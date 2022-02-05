@@ -36,6 +36,14 @@ export const Drawing = () => {
         socketService.on('finish drawing', () => {
             ctxRef.current.closePath();
         });
+
+        socketService.on('switch player role', () => {
+            dispatch(switchPlayers());
+        });
+
+        socketService.on('new word chosen', () => {
+            dispatch(loadGameSessions());
+        });
     }, []);
 
     useEffectUpdate(() => {
@@ -111,6 +119,10 @@ export const Drawing = () => {
     const endGame = (guesser, points) => {
         dispatch(setGameData(guesser, points));
         dispatch(switchPlayers());
+
+        // Socket:
+        socketService.emit('switch player role');
+
         if (player.type === 'guesser') history.push('/word-choosing');
     };
 

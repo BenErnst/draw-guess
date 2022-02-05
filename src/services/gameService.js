@@ -49,6 +49,7 @@ async function saveGameSession(gameSession = _getNewGameSession()) {
 
 async function saveWord(word) {
     let gameSessionToEdit = await _getCurrSession();
+    if (gameSessionToEdit.score) gameSessionToEdit = _getNewGameSession();
     gameSessionToEdit.word = word;
     return await saveGameSession(gameSessionToEdit);
 }

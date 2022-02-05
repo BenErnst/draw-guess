@@ -24,6 +24,10 @@ export const WordChoosing = () => {
 
     const chooseWord = (word) => {
         dispatch(setWord(word));
+
+        // Socket:
+        socketService.emit('new word chosen');
+
         history.push('/drawing');
 
         // Socket:

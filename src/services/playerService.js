@@ -28,6 +28,7 @@ async function savePlayer(player) {
 }
 
 function switchPlayers() {
+    console.log('switchPlayers in service');
     const player = storageService.sessionLoad(STORAGE_KEY);
     const typesMap = {
         'drawer': 'guesser',

@@ -1,7 +1,7 @@
 import { socketService } from '../services/socketService';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { loadPlayer } from '../store/actions/playerActions';
 import { useEffectUpdate } from '../hooks/useEffectUpdate';
 

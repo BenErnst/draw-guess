@@ -1,5 +1,6 @@
 
 import { playerService } from '../../services/playerService';
+import { socketService } from '../../services/socketService';
 
 export function loadPlayer() {
     return async (dispatch) => {
@@ -26,6 +27,7 @@ export function savePlayer(playerToSave) {
 export function switchPlayers() {
     return async (dispatch) => {
         try {
+            console.log('switchPlayers in actions');
             const player = await playerService.switchPlayers();
             dispatch({ type: 'SET_PLAYER', player });
         } catch (err) {
@@ -33,3 +35,4 @@ export function switchPlayers() {
         }
     }
 }
+
