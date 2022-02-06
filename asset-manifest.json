@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/draw-guess-frontend/static/css/main.a5669f13.css",
-    "main.js": "/draw-guess-frontend/static/js/main.770ce3c6.js",
+    "main.css": "/draw-guess-frontend/static/css/main.f1f099b5.css",
+    "main.js": "/draw-guess-frontend/static/js/main.801e0167.js",
     "static/js/787.883bfeb5.chunk.js": "/draw-guess-frontend/static/js/787.883bfeb5.chunk.js",
     "static/media/waiting.gif": "/draw-guess-frontend/static/media/waiting.f480cb495cd9be155ecd.gif",
     "static/media/OpenSans-Bold.ttf": "/draw-guess-frontend/static/media/OpenSans-Bold.6e27168fc8a5a200a026.ttf",
     "static/media/OpenSans-Light.ttf": "/draw-guess-frontend/static/media/OpenSans-Light.846a12caf01a940847a7.ttf",
     "static/media/loading.gif": "/draw-guess-frontend/static/media/loading.093a6a2655342a37dc2b.gif",
     "index.html": "/draw-guess-frontend/index.html",
-    "main.a5669f13.css.map": "/draw-guess-frontend/static/css/main.a5669f13.css.map",
-    "main.770ce3c6.js.map": "/draw-guess-frontend/static/js/main.770ce3c6.js.map",
+    "main.f1f099b5.css.map": "/draw-guess-frontend/static/css/main.f1f099b5.css.map",
+    "main.801e0167.js.map": "/draw-guess-frontend/static/js/main.801e0167.js.map",
     "787.883bfeb5.chunk.js.map": "/draw-guess-frontend/static/js/787.883bfeb5.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a5669f13.css",
-    "static/js/main.770ce3c6.js"
+    "static/css/main.f1f099b5.css",
+    "static/js/main.801e0167.js"
   ]
 }
