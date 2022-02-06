@@ -1,4 +1,4 @@
-<h1 align="center">🎨Draw & Guess🎨</h1>
+<h1 align="center">🎨Draw & Guess❓</h1>
 <h3 align="center">An End-to-End Single Page Application</h3>
 
 - 🧑‍🤝‍🧑 Two users are playing in parallel when one is drawing a shape on a canvas describing a certain word picked up earlier, while the other needs to guess what the draw is about.
