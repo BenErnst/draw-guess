@@ -1,0 +1,20 @@
+.drawing-container {
+    h1 {
+        font-family: OpenSans-Light;
+        span {
+            font-weight: bold;
+        }
+    }
+    .canvas-container {
+        margin-top: 20px;
+        margin: 20px auto 10px;
+    }
+    .setting-color-container {
+        button {
+            margin: 4px;
+            padding: 3px 8px;
+            opacity: 0.8;
+            border-radius: 5px;
+        }
+    }
+}

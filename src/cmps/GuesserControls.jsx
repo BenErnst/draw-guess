@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 import { useForm } from '../hooks/useForm';
+import { useToggle } from '../hooks/useToggle';
 
 export const GuesserControls = ({ guesser, word, onEndGame }) => {
     const [guess, handleChange, setGuess] = useForm('');
+    const [isCorrect, setIsCorrect] = useToggle(true);
 
     useEffect(() => {
         setGuess(guess);
@@ -14,13 +16,16 @@ export const GuesserControls = ({ guesser, word, onEndGame }) => {
             console.log('Correct!');
             onEndGame(guesser, word.rank.points);
         } else {
-            console.log('Try Again!');
+            setIsCorrect(false);
+            setTimeout(() => {
+                setIsCorrect(true);
+            }, 1500);
         }
         setGuess('');
     };
 
     return (
-        <div>
+        <div className="guesser-controls-container">
             <form onSubmit={onGuess} className="enter-guess-form">
                 <section className="input-container">
                     <label htmlFor="guess"></label>
@@ -30,11 +35,12 @@ export const GuesserControls = ({ guesser, word, onEndGame }) => {
                         type="text"
                         name="guess"
                         id="guess"
-                        placeholder="What is it?..."
+                        placeholder="Your Guess..."
                     />
                 </section>
-                <button>Guess</button>
+                <button>OK!</button>
             </form>
+            <p className={!isCorrect ? 'visible' : 'hidden'}>Try Again</p>
         </div>
     );
 };

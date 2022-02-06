@@ -1,34 +1,28 @@
-import { socketService } from '../services/socketService';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { loadPlayer } from '../store/actions/playerActions';
-import { useEffectUpdate } from '../hooks/useEffectUpdate';
+import { useHistory } from 'react-router-dom';
 import { useToggle } from '../hooks/useToggle';
+import { socketService } from '../services/socketService';
 import Avatar from '@mui/material/Avatar';
 import { styled } from '@mui/material/styles';
 import Badge from '@mui/material/Badge';
 
 export const Waiting = () => {
-    const { currSession } = useSelector((state) => state.gameModule);
-
     const { player } = useSelector((state) => state.playerModule);
-    const dispatch = useDispatch();
     const history = useHistory();
 
     const [isDrawerArrived, setIsDrawerArrived] = useToggle(true);
 
     useEffect(() => {
+        if (!player) return;
         if (player.type === 'guesser') {
             socketService.on('drawer arrived', () => {
                 setIsDrawerArrived(true);
             });
-
             socketService.on('drawer is ready to play', () => {
                 history.push('/drawing');
             });
         }
-
         if (player.type === 'drawer') {
             socketService.on('guesser is ready to play', () => {
                 history.push('/word-choosing');
@@ -81,8 +75,9 @@ export const Waiting = () => {
             )}
         </section>
     ) : (
-        // <img src={require(`../assets/img/loading.gif`)} className="loading-gif" />
-        <button onClick={() => history.push('/')}>Back Home</button>
+        <button onClick={() => history.push('/')} style={{ padding: '5px' }}>
+            Back Home
+        </button>
     );
 };
 

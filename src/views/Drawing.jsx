@@ -1,37 +1,34 @@
-import { socketService } from '../services/socketService';
-import { useToggle } from '../hooks/useToggle';
+import { useRef, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useRef, useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Canvas } from '../cmps/Canvas';
+import { useToggle } from '../hooks/useToggle';
 import { useEffectUpdate } from '../hooks/useEffectUpdate';
-import { loadGameSessions, setGameData, saveImg } from '../store/actions/gameActions';
-import { savePlayer, switchPlayers } from '../store/actions/playerActions';
-import { GuesserControls } from '../cmps/GuesserControls';
-import { canvasService } from '../services/canvasService.js';
+import { Canvas } from '../cmps/Canvas';
 import { Timer } from '../cmps/Timer';
+import { GuesserControls } from '../cmps/GuesserControls';
+import { loadGameSessions, setGameData } from '../store/actions/gameActions';
+import { savePlayer, switchPlayers } from '../store/actions/playerActions';
+import { socketService } from '../services/socketService';
 
 export const Drawing = () => {
-    const history = useHistory();
-
     const { currSession } = useSelector((state) => state.gameModule);
     const { player } = useSelector((state) => state.playerModule);
     const dispatch = useDispatch();
+
+    const [count, setCount] = useState(0);
+    const [isTimerOn, setIsTimerOn] = useToggle(false);
 
     const canvasRef = useRef(null);
     const ctxRef = useRef(null);
     const touchEvsRef = useRef(['touchstart', 'touchend', 'touchmove']);
     const colorsRef = useRef(['red', 'green', 'blue', 'black']);
 
-    const [count, setCount] = useState(0);
-    // let intervalIdRef = useRef();
-
-    const [isTimerOn, setIsTimerOn] = useToggle(false);
+    const history = useHistory();
 
     useEffect(() => {
         setTimeout(() => {
             dispatch(loadGameSessions());
-        }, 100);
+        }, 50);
 
         socketService.on('start drawing', (evPos) => {
             ctxRef.current.beginPath();
@@ -65,12 +62,15 @@ export const Drawing = () => {
             }, 100);
         });
 
-        // return () => {
-        //     clearInterval(intervalIdRef.current);
-        // };
+        if (!count) setIsTimerOn(true);
     }, []);
 
     useEffectUpdate(() => {
+        if (!canvasRef.current) {
+            history.push('/');
+            return;
+        }
+
         const canvas = canvasRef.current;
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
@@ -80,12 +80,6 @@ export const Drawing = () => {
         ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
         ctxRef.current = ctx;
-
-        // if (player.type === 'guesser') {
-        //     intervalIdRef.current = setInterval(() => {
-        //         setCount((prevCount) => prevCount + 1);
-        //     }, 1000);
-        // }
     }, [currSession]);
 
     const setLineColor = (color) => {
@@ -95,7 +89,6 @@ export const Drawing = () => {
     const startDrawing = (ev) => {
         const evPos = getEvPos(ev);
 
-        // Socket:
         socketService.emit('start drawing', evPos);
 
         ctxRef.current.beginPath();
@@ -103,9 +96,7 @@ export const Drawing = () => {
     };
 
     const finishDrawing = () => {
-        // Socket:
         socketService.emit('finish drawing');
-
         ctxRef.current.closePath();
     };
 
@@ -113,7 +104,6 @@ export const Drawing = () => {
         if (player.type === 'guesser') return;
         const evPos = getEvPos(ev);
 
-        // Socket:
         socketService.emit('drawing', {
             pos: evPos,
             color: ctxRef.current.strokeStyle,
@@ -125,6 +115,7 @@ export const Drawing = () => {
 
     const getEvPos = (ev) => {
         var pos;
+        // for Mobile:
         if (touchEvsRef.current.includes(ev.type)) {
             ev.preventDefault();
             ev = ev.changedTouches[0];
@@ -132,6 +123,7 @@ export const Drawing = () => {
                 x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
                 y: ev.pageY - ev.target.offsetTop - ev.target.clientTop,
             };
+            //
         } else {
             pos = {
                 x: ev.nativeEvent.offsetX,
@@ -152,11 +144,14 @@ export const Drawing = () => {
     };
 
     return currSession && player ? (
-        <section>
-            <h1>Drawing here</h1>
-            <h2>Word: {currSession.word.txt}</h2>
+        <section className="drawing-container">
+            {player.type === 'drawer' && (
+                <h1>
+                    Your Word: <span>{currSession.word.txt}</span>
+                </h1>
+            )}
 
-            <div>
+            <div className="canvas-container">
                 <Canvas
                     onStartDrawing={startDrawing}
                     onFinishDrawing={finishDrawing}
@@ -167,25 +162,19 @@ export const Drawing = () => {
             </div>
 
             {player.type === 'drawer' ? (
-                <section>
-                    <div>
-                        {colorsRef.current.map((color) => {
-                            return (
-                                <button
-                                    onClick={() => setLineColor(color)}
-                                    style={{ background: color }}
-                                    key={color}
-                                >
-                                    -----
-                                </button>
-                            );
-                        })}
-                    </div>
-                    <div>
-                        {/* <h3>Your Word: {currSession.word.txt}</h3> */}
-                        <button onClick={history.goBack}>⬅Words</button>
-                    </div>
-                </section>
+                <div className="setting-color-container">
+                    {colorsRef.current.map((color) => {
+                        return (
+                            <button
+                                onClick={() => setLineColor(color)}
+                                style={{ background: color }}
+                                key={color}
+                            >
+                                🖌️
+                            </button>
+                        );
+                    })}
+                </div>
             ) : (
                 <div>
                     <GuesserControls guesser={player} word={currSession.word} onEndGame={endGame} />

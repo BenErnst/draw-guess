@@ -50,6 +50,7 @@ export const BestSession = ({ gameSessions }) => {
             <button onClick={toggleBestInfo}>
                 Best Session Info <span>{isBestInfoShown ? '⬆' : '⬇'}</span>
             </button>
+
             {bestSession && <BestSessionTemplate bestSession={bestSession} />}
         </section>
     );

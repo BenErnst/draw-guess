@@ -8,18 +8,18 @@
 // Basics
 @import 'basics/typography';
 @import 'basics/base';
-@import 'basics/helpers';
 @import 'basics/layout';
-@import 'basics/modals';
-@import 'basics/animations';
 
 // Views
 @import 'views/home';
 @import 'views/waiting';
 @import 'views/word-choosing';
+@import 'views/drawing';
 
 // Components
 @import 'cmps/app-header';
 @import 'cmps/best-session-cmps/best-session';
 @import 'cmps/best-session-cmps/best-session-template';
 @import 'cmps/word';
+@import 'cmps/guesser-controls';
+@import 'cmps/timer';

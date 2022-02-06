@@ -1,17 +1,15 @@
-import { socketService } from '../services/socketService';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { setWord } from '../store/actions/gameActions';
-import { randomWordsService } from '../services/randomWordsService';
-import { Word } from '../cmps/Word';
 import { useHistory } from 'react-router-dom';
+import { Word } from '../cmps/Word';
+import { setWord } from '../store/actions/gameActions';
+import { socketService } from '../services/socketService';
+import { randomWordsService } from '../services/randomWordsService';
 
 export const WordChoosing = () => {
     const [words, setWords] = useState([]);
 
-    const { player } = useSelector((state) => state.playerModule);
     const dispatch = useDispatch();
-
     const history = useHistory();
 
     useEffect(() => {
@@ -24,13 +22,8 @@ export const WordChoosing = () => {
 
     const chooseWord = (word) => {
         dispatch(setWord(word));
-
-        // Socket:
         socketService.emit('new word chosen');
-
         history.push('/drawing');
-
-        // Socket:
         socketService.emit('drawer is ready to play');
     };
 

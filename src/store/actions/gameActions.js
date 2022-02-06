@@ -34,35 +34,9 @@ export function setGameData(data) {
         try {
             const savedSession = await gameService.saveGameData(data);
             dispatch({type: 'SAVE_GAME_SESSION', savedSession});
-            // dispatch({type: 'SET_CURR_SESSION', currSession: null});
         } catch (err) {
             console.log('Error in setScore Action:', err);
         }
     }
 }
 
-
-// export function getById(id) {
-//     return async (dispatch) => {
-//         try {
-//             const currSession = await gameService.getById(id);
-//             dispatch({type: 'SET_CURR_SESSION', currSession});
-//         } catch (err) {
-//             console.log('Error in getSessionById Action:', err);
-//         }
-//     }
-// }
-
-// export function saveImg(dataURL) {
-//     return async (dispatch) => {
-//         try {
-//             const savedSession = await gameService.saveImg(dataURL);
-//             dispatch({type: 'SAVE_GAME_SESSION', savedSession});
-
-//             const currSession = savedSession;
-//             dispatch({type: 'SET_CURR_SESSION', currSession});
-//         } catch (err) {
-//             console.log('Error in saveImg Action:', err);
-//         }
-//     }
-// }

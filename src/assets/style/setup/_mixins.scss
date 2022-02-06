@@ -1,23 +1,3 @@
-/* Breakpoint mixins - Mobile First */
-// @mixin for-narrow-layout {
-//     @media (min-width: $mobile-breakpoint) {
-//         @content;
-//     }
-// }
-
-// @mixin for-normal-layout {
-//     @media (min-width: $narrow-breakpoint) {
-//         @content;
-//     }
-// }
-
-// @mixin for-wide-layout {
-//     @media (min-width: $normal-breakpoint) {
-//         @content;
-//     }
-// }
-
-/* Desktop First */
 @mixin for-mobile-layout {
     @media (max-width: $mobile-breakpoint) {
         @content;
@@ -42,8 +22,6 @@
     }
 }
 
-
-
 /* Media  Mixins */
 @mixin aspect-ratio($width, $height) {
     position: relative;
@@ -51,14 +29,14 @@
 
     &:before {
         display: block;
-        content: "";
+        content: '';
         width: 100%;
         padding-top: ($height / $width) * 100%;
         pointer-events: none;
     }
 
-    &>img,
-    &>iframe {
+    & > img,
+    & > iframe {
         position: absolute;
         top: 0;
         left: 0;
@@ -68,7 +46,7 @@
         width: 100%;
     }
 
-    >img {
+    > img {
         object-fit: cover;
     }
 }

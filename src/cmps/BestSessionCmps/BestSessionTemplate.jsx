@@ -5,7 +5,7 @@ export const BestSessionTemplate = ({ bestSession }) => {
         return num > 1 ? 's' : '';
     };
 
-    return (
+    return bestSession.score || bestSession.length ? (
         <section className="best-data-container">
             {Array.isArray(bestSession) ? (
                 <section>
@@ -16,10 +16,12 @@ export const BestSessionTemplate = ({ bestSession }) => {
                                 <span>Name:</span> {session.guesser.name}
                             </h3>
                             <h3>
-                                <span>Score:</span> {session.score} Point{getLetterS(session.score)}
+                                <span>Score:</span> {session.score} Point
+                                {getLetterS(session.score)}
                             </h3>
                             <h3>
-                                <span>Time:</span> {session.time} Second{getLetterS(session.time)}
+                                <span>Time:</span> {session.time} Second
+                                {getLetterS(session.time)}
                             </h3>
                             <h4>{moment(session.endedAt).calendar()}</h4>
                         </div>
@@ -32,15 +34,21 @@ export const BestSessionTemplate = ({ bestSession }) => {
                             <span>Name:</span> {bestSession.guesser.name}
                         </h3>
                         <h3>
-                            <span>Score:</span> {bestSession.score} Points
+                            <span>Score:</span> {bestSession.score} Point
+                            {getLetterS(bestSession.score)}
                         </h3>
                         <h3>
-                            <span>Time:</span> {bestSession.time} Seconds
+                            <span>Time:</span> {bestSession.time} Second
+                            {getLetterS(bestSession.time)}
                         </h3>
                         <h4>{moment(bestSession.endedAt).calendar()}</h4>
                     </div>
                 </section>
             )}
         </section>
-    );
+    ) : null;
 };
+
+{
+    /* <img src={require(`../assets/img/loading.gif`)} className="loading-gif" /> */
+}

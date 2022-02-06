@@ -1,0 +1,38 @@
+.guesser-controls-container {
+    form {
+        margin-bottom: 15px;
+        input {
+            padding: 10px;
+            background-color: rgb(202, 199, 199);
+            font-weight: bold;
+            border: 3px solid rgb(61, 61, 61);
+            margin-bottom: 5px;
+        }
+        button {
+            padding: 5px 15px;
+            font-weight: 700;
+            font-size: 16px;
+            background-color: #596780;
+            color: #d8dae6;
+            font-family: monospace;
+            opacity: 0.9;
+            border: 3px solid #95a2be;
+            &:active {
+                opacity: 0.7;
+            }
+        }
+    }
+    p {
+        font-family: OpenSans-Bold;
+        transition: opacity 0.5s;
+        color: rgb(241, 88, 88);
+        opacity: 0.7;
+        margin: 0 auto 5px;
+    }
+    .visible {
+        opacity: 1;
+    }
+    .hidden {
+        opacity: 0;
+    }
+}

@@ -11,16 +11,6 @@ window.socketService = socketService
 // var socketIsReady = false;
 socketService.setup()
 
-
-/////
-// const socket = io(baseUrl);
-// socket.on('Game Started', () => {
-//   console.log('Game Started!');
-// })
-/////
-
-
-
 function createSocketService() {
   var socket = null;
   const socketService = {

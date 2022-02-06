@@ -1,8 +1,6 @@
-import { useHistory, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 export const AppHeader = () => {
-    const history = useHistory();
-
     return (
         <header className="app-header">
             <section className="container">

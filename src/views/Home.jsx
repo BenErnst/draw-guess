@@ -1,14 +1,13 @@
-import { useRef, useEffect, useCallback } from 'react';
-import { utilService } from '../services/utilService';
-import { socketService } from '../services/socketService';
-import { useForm } from '../hooks/useForm';
-import { useDispatch } from 'react-redux';
-import { savePlayer } from '../store/actions/playerActions';
+import { useRef, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useForm } from '../hooks/useForm';
 import { useToggle } from '../hooks/useToggle';
-import { loadGameSessions } from '../store/actions/gameActions';
-import { useSelector } from 'react-redux';
 import { BestSession } from '../cmps/BestSessionCmps/BestSession';
+import { loadGameSessions } from '../store/actions/gameActions';
+import { savePlayer } from '../store/actions/playerActions';
+import { socketService } from '../services/socketService';
+import { utilService } from '../services/utilService';
 
 export const Home = () => {
     const [playerName, handleChange, setPlayerName] = useForm('');
@@ -16,10 +15,9 @@ export const Home = () => {
     const history = useHistory();
 
     const inputRef = useRef();
+    const [isDrawerArrived, setIsDrawerArrived] = useToggle(false);
 
     const { gameSessions } = useSelector((state) => state.gameModule);
-
-    const [isDrawerArrived, setIsDrawerArrived] = useToggle(false);
 
     useEffect(() => {
         dispatch(loadGameSessions());
@@ -39,7 +37,6 @@ export const Home = () => {
             inputRef.current.focus();
             return;
         }
-
         history.push('/waiting');
     };
 
@@ -52,7 +49,6 @@ export const Home = () => {
                 type,
             })
         );
-        // Socket:
         socketService.emit(`${type} arrived`);
     };
 
