@@ -6,9 +6,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Canvas } from '../cmps/Canvas';
 import { useEffectUpdate } from '../hooks/useEffectUpdate';
 import { loadGameSessions, setGameData, saveImg } from '../store/actions/gameActions';
-import { switchPlayers } from '../store/actions/playerActions';
+import { savePlayer, switchPlayers } from '../store/actions/playerActions';
 import { GuesserControls } from '../cmps/GuesserControls';
 import { canvasService } from '../services/canvasService.js';
+import { Timer } from '../cmps/Timer';
 
 export const Drawing = () => {
     const history = useHistory();
@@ -20,30 +21,53 @@ export const Drawing = () => {
     const canvasRef = useRef(null);
     const ctxRef = useRef(null);
     const touchEvsRef = useRef(['touchstart', 'touchend', 'touchmove']);
+    const colorsRef = useRef(['red', 'green', 'blue', 'black']);
+
+    const [count, setCount] = useState(0);
+    // let intervalIdRef = useRef();
+
+    const [isTimerOn, setIsTimerOn] = useToggle(false);
 
     useEffect(() => {
-        dispatch(loadGameSessions());
+        setTimeout(() => {
+            dispatch(loadGameSessions());
+        }, 100);
 
-        // Socket:
         socketService.on('start drawing', (evPos) => {
             ctxRef.current.beginPath();
             ctxRef.current.moveTo(evPos.x, evPos.y);
         });
-        socketService.on('drawing', (evPos) => {
-            ctxRef.current.lineTo(evPos.x, evPos.y);
+        socketService.on('drawing', (data) => {
+            ctxRef.current.strokeStyle = data.color;
+            ctxRef.current.lineTo(data.pos.x, data.pos.y);
             ctxRef.current.stroke();
         });
         socketService.on('finish drawing', () => {
             ctxRef.current.closePath();
         });
 
-        socketService.on('switch player role', () => {
-            dispatch(switchPlayers());
+        socketService.on('switch player type', (type) => {
+            console.log(`switch player type to ${type}`);
+            dispatch(
+                savePlayer({
+                    id: player.id,
+                    name: player.name,
+                    type,
+                })
+            );
         });
 
         socketService.on('new word chosen', () => {
-            dispatch(loadGameSessions());
+            console.log('new word chosen');
+            setIsTimerOn(true);
+            setTimeout(() => {
+                dispatch(loadGameSessions());
+            }, 100);
         });
+
+        // return () => {
+        //     clearInterval(intervalIdRef.current);
+        // };
     }, []);
 
     useEffectUpdate(() => {
@@ -53,17 +77,20 @@ export const Drawing = () => {
 
         const ctx = canvas.getContext('2d');
         ctx.scale(2, 2);
-        ctx.strokeStyle = '#2d2d2d';
+        ctx.strokeStyle = 'black';
         ctx.lineWidth = 3;
         ctxRef.current = ctx;
+
+        // if (player.type === 'guesser') {
+        //     intervalIdRef.current = setInterval(() => {
+        //         setCount((prevCount) => prevCount + 1);
+        //     }, 1000);
+        // }
     }, [currSession]);
 
-    const renderImg = useCallback((ctx, canvas) => {
-        if (!currSession) return;
-        const img = new Image();
-        img.src = currSession.imgURL;
-        ctx.current.drawImage(img, 0, 0, canvas.current.width / 2, canvas.current.height / 2);
-    }, []);
+    const setLineColor = (color) => {
+        ctxRef.current.strokeStyle = color;
+    };
 
     const startDrawing = (ev) => {
         const evPos = getEvPos(ev);
@@ -87,7 +114,10 @@ export const Drawing = () => {
         const evPos = getEvPos(ev);
 
         // Socket:
-        socketService.emit('drawing', evPos);
+        socketService.emit('drawing', {
+            pos: evPos,
+            color: ctxRef.current.strokeStyle,
+        });
 
         ctxRef.current.lineTo(evPos.x, evPos.y);
         ctxRef.current.stroke();
@@ -111,32 +141,21 @@ export const Drawing = () => {
         return pos;
     };
 
-    const onSaveImg = () => {
-        var dataURL = canvasRef.current.toDataURL();
-        dispatch(saveImg(dataURL));
-    };
-
     const endGame = (guesser, points) => {
-        dispatch(setGameData(guesser, points));
+        const ts = Date.now();
+        dispatch(setGameData({ guesser, points, count, ts }));
         dispatch(switchPlayers());
 
-        // Socket:
-        socketService.emit('switch player role');
+        socketService.emit('switch player type', player.type);
 
         if (player.type === 'guesser') history.push('/word-choosing');
     };
 
-    const drawerControls = (
-        <div>
-            <button onClick={history.goBack}>⬅Words</button>
-            <button onClick={onSaveImg}>Save</button>
-        </div>
-    );
-
     return currSession && player ? (
         <section>
             <h1>Drawing here</h1>
-            <h2>{currSession.word.txt}</h2>
+            <h2>Word: {currSession.word.txt}</h2>
+
             <div>
                 <Canvas
                     onStartDrawing={startDrawing}
@@ -148,9 +167,35 @@ export const Drawing = () => {
             </div>
 
             {player.type === 'drawer' ? (
-                drawerControls
+                <section>
+                    <div>
+                        {colorsRef.current.map((color) => {
+                            return (
+                                <button
+                                    onClick={() => setLineColor(color)}
+                                    style={{ background: color }}
+                                    key={color}
+                                >
+                                    -----
+                                </button>
+                            );
+                        })}
+                    </div>
+                    <div>
+                        {/* <h3>Your Word: {currSession.word.txt}</h3> */}
+                        <button onClick={history.goBack}>⬅Words</button>
+                    </div>
+                </section>
             ) : (
-                <GuesserControls guesser={player} word={currSession.word} onEndGame={endGame} />
+                <div>
+                    <GuesserControls guesser={player} word={currSession.word} onEndGame={endGame} />
+                    <Timer
+                        player={player}
+                        count={count}
+                        setCount={setCount}
+                        isTimerOn={isTimerOn}
+                    />
+                </div>
             )}
         </section>
     ) : (

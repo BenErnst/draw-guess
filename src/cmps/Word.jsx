@@ -5,7 +5,7 @@ const _Word = ({ word, onChooseWord }) => {
     const { level, points } = rank;
 
     return (
-        <section>
+        <section className="words-container">
             <button onClick={() => onChooseWord(word)}>{txt}</button>
             <p>{level}</p>
             <p>

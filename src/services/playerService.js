@@ -2,6 +2,7 @@
 import { storageService } from './storageService.js';
 import { httpService } from './httpService';
 import { gameService } from './gameService.js';
+import { socketService } from './socketService';
 
 export const playerService = {
     getPlayer,
@@ -28,7 +29,6 @@ async function savePlayer(player) {
 }
 
 function switchPlayers() {
-    console.log('switchPlayers in service');
     const player = storageService.sessionLoad(STORAGE_KEY);
     const typesMap = {
         'drawer': 'guesser',

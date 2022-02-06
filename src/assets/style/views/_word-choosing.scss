@@ -1,0 +1,21 @@
+.word-choosing-container {
+    margin-top: 10px;
+    h1 {
+        font-family: OpenSans-Bold;
+        margin-bottom: 30px;
+    }
+    .get-other-words-btn {
+        margin: 30px 10px 30px;
+        padding: 5px 10px;
+        font-weight: 700;
+        font-size: 15px;
+        background-color: darkslategrey;
+        color: rgb(219, 218, 218);
+        font-family: monospace;
+        opacity: 0.9;
+        border: 3px solid #99a6c2;
+        &:active {
+            opacity: 0.7;
+        }
+    }
+}

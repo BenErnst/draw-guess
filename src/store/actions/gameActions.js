@@ -15,17 +15,6 @@ export function loadGameSessions() {
     }
 }
 
-export function getById(id) {
-    return async (dispatch) => {
-        try {
-            const currSession = await gameService.getById(id);
-            dispatch({type: 'SET_CURR_SESSION', currSession});
-        } catch (err) {
-            console.log('Error in getSessionById Action:', err);
-        }
-    }
-}
-
 export function setWord(word) {
     return async (dispatch) => {
         try {
@@ -40,24 +29,10 @@ export function setWord(word) {
     }
 }
 
-export function saveImg(dataURL) {
+export function setGameData(data) {
     return async (dispatch) => {
         try {
-            const savedSession = await gameService.saveImg(dataURL);
-            dispatch({type: 'SAVE_GAME_SESSION', savedSession});
-
-            const currSession = savedSession;
-            dispatch({type: 'SET_CURR_SESSION', currSession});
-        } catch (err) {
-            console.log('Error in saveImg Action:', err);
-        }
-    }
-}
-
-export function setGameData(guesser, points) {
-    return async (dispatch) => {
-        try {
-            const savedSession = await gameService.saveGameData(guesser, points);
+            const savedSession = await gameService.saveGameData(data);
             dispatch({type: 'SAVE_GAME_SESSION', savedSession});
             // dispatch({type: 'SET_CURR_SESSION', currSession: null});
         } catch (err) {
@@ -66,20 +41,28 @@ export function setGameData(guesser, points) {
     }
 }
 
-// export function removeRobot(robotId) {
+
+// export function getById(id) {
 //     return async (dispatch) => {
 //         try {
-//             await robotService.remove(robotId)
-//             dispatch({ type: 'REMOVE_ROBOT', robotId })
+//             const currSession = await gameService.getById(id);
+//             dispatch({type: 'SET_CURR_SESSION', currSession});
 //         } catch (err) {
-//             console.log(err);
+//             console.log('Error in getSessionById Action:', err);
 //         }
 //     }
 // }
 
-// export function setFilterBy(filterBy) {
+// export function saveImg(dataURL) {
 //     return async (dispatch) => {
-//         dispatch({ type: 'SET_FILTER_BY', filterBy })
+//         try {
+//             const savedSession = await gameService.saveImg(dataURL);
+//             dispatch({type: 'SAVE_GAME_SESSION', savedSession});
+
+//             const currSession = savedSession;
+//             dispatch({type: 'SET_CURR_SESSION', currSession});
+//         } catch (err) {
+//             console.log('Error in saveImg Action:', err);
+//         }
 //     }
 // }
-

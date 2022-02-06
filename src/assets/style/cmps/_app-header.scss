@@ -1,26 +1,23 @@
 .app-header {
     background: #285b72;
-    // section.container {
-    //     display: flex;
-    //     align-items: center;
-    //     .logo {
-    //         // @include quotes
-    //         flex-grow: 1;
-    //     }
-    //     .logged-user {
-    //         margin-right: 20px;
-    //     }
-    //     .back-container {
-    //         flex-grow: 1;
-    //     }
-    //     nav {
-    //         a:not(:last-child) {
-    //             margin-right: 20px;
-    //         }
-
-    //         // a:is(.active, .my-active) {
-    //         //     color: red;
-    //         // }
-    //     }
-    // }
+    background: $clr3;
+    padding-bottom: 0;
+    h2 {
+        font-family: OpenSans-Bold;
+        font-size: 30px;
+    }
+    nav {
+        a {
+            font-size: 12px;
+            font-family: OpenSans-Bold;
+            font-size: 12px;
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            color: rgb(80, 102, 117);
+            &:is(.active, .my-active) {
+                color: rgb(46, 125, 179);
+            }
+        }
+    }
 }

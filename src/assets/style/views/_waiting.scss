@@ -1,0 +1,30 @@
+.waiting-container {
+    div {
+        margin-top: 20px;
+        h2 {
+            margin-top: 25px;
+        }
+        h3 {
+            font-family: OpenSans-Bold;
+            margin: 20px auto 15px;
+        }
+        button {
+            margin: 5px 10px 30px;
+            padding: 5px 10px;
+            font-weight: 700;
+            font-size: 15px;
+            background-color: rgb(235, 205, 149);
+            color: #536894;
+            font-family: monospace;
+            opacity: 0.9;
+            border: 3px solid #99a6c2;
+            &:active {
+                opacity: 0.7;
+            }
+        }
+    }
+    .player-avatar {
+        width: 50px;
+        height: 50px;
+    }
+}

@@ -1,0 +1,21 @@
+.words-container {
+    margin-bottom: 25px;
+    button {
+        margin-bottom: 10px;
+        padding: 3px 15px;
+        font-weight: 700;
+        font-size: 16px;
+        background-color: rgb(16, 43, 83);
+        color: rgb(219, 218, 218);
+        font-family: OpenSans-Light;
+        opacity: 0.9;
+        border: 1px solid #99a6c2;
+        box-shadow: 0 0 5px 5px black;
+        &:active {
+            opacity: 0.7;
+        }
+    }
+    p {
+        font-family: OpenSans-Light;
+    }
+}

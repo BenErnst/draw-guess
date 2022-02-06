@@ -1,6 +1,6 @@
-import { forwardRef, useEffect } from 'react';
+import { memo, forwardRef, useEffect } from 'react';
 
-export const Canvas = forwardRef((props, ref) => {
+export const _Canvas = forwardRef((props, ref) => {
     const { onStartDrawing, onFinishDrawing, onDraw, touchEvs } = props;
 
     useEffect(() => {
@@ -22,3 +22,5 @@ export const Canvas = forwardRef((props, ref) => {
         />
     );
 });
+
+export const Canvas = memo(_Canvas);

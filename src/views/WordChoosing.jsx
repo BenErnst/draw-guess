@@ -39,10 +39,12 @@ export const WordChoosing = () => {
     ));
 
     return (
-        <section>
-            <h1>Hey {player.name}!</h1>
+        <section className="word-choosing-container">
+            <h1>Pick a Word</h1>
             {wordsComponent}
-            <button onClick={onSetWords}>Get Other Words</button>
+            <button onClick={onSetWords} className="get-other-words-btn">
+                Get Other Words
+            </button>
         </section>
     );
 };

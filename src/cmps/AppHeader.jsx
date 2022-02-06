@@ -1,4 +1,4 @@
-import { useHistory } from 'react-router-dom';
+import { useHistory, NavLink } from 'react-router-dom';
 
 export const AppHeader = () => {
     const history = useHistory();
@@ -7,7 +7,11 @@ export const AppHeader = () => {
         <header className="app-header">
             <section className="container">
                 <h2>Draw & Guess</h2>
-                <button onClick={() => history.push('/')}>Home</button>
+                <nav>
+                    <NavLink activeClassName="my-active" exact to="/">
+                        Home
+                    </NavLink>
+                </nav>
             </section>
         </header>
     );

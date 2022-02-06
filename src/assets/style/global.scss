@@ -14,14 +14,12 @@
 @import 'basics/animations';
 
 // Views
-// @import "pages/about";
-// @import "pages/robot-app";
-// @import "pages/robot-edit";
-// @import "pages/robot-details";
+@import 'views/home';
+@import 'views/waiting';
+@import 'views/word-choosing';
 
 // Components
 @import 'cmps/app-header';
-// @import "cmps/robot-preview";
-// @import "cmps/robot-list";
-// @import "cmps/robot-filter";
-// @import "cmps/nice-button";
+@import 'cmps/best-session-cmps/best-session';
+@import 'cmps/best-session-cmps/best-session-template';
+@import 'cmps/word';

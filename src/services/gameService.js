@@ -4,11 +4,11 @@ import { httpService } from './httpService';
 
 export const gameService = {
     query,
-    getById,
+    // getById,
     saveGameSession,
     saveWord,
     saveGameData,
-    saveImg
+    // saveImg
 }
 
 async function query() {
@@ -22,15 +22,6 @@ async function query() {
     }
 }
 
-async function getById(id) {
-    try {
-        return await httpService.get(`gameSession/${id}`);
-    } catch (err) {
-        console.log('Error in getById (front gameService):', err);
-        throw err;
-    }
-}
-
 async function saveGameSession(gameSession = _getNewGameSession()) {
     // gameSession.isOn = true;
     try {
@@ -38,7 +29,7 @@ async function saveGameSession(gameSession = _getNewGameSession()) {
         await httpService.put(`gameSession/${gameSession._id}`, gameSession) :
         await httpService.post('gameSession/', gameSession);
 
-        console.log('savedGameSession:', savedGameSession);
+        // console.log('savedGameSession:', savedGameSession);
 
         return savedGameSession;
     } catch (err) {
@@ -54,17 +45,13 @@ async function saveWord(word) {
     return await saveGameSession(gameSessionToEdit);
 }
 
-async function saveImg(dataURL) {
-    let gameSessionToEdit = await _getCurrSession();
-    gameSessionToEdit.imgURL = dataURL;
-    return await saveGameSession(gameSessionToEdit);
-}
 
-async function saveGameData(guesser, points) {
+async function saveGameData({guesser, points, count, ts}) {
     let gameSessionToEdit = await _getCurrSession();
     gameSessionToEdit.guesser = guesser;
     gameSessionToEdit.score = points;
-    // gameSessionToEdit.isOn = false;
+    gameSessionToEdit.time = count;
+    gameSessionToEdit.endedAt = ts;
     return await saveGameSession(gameSessionToEdit);
 }
 
@@ -87,7 +74,28 @@ function _getNewGameSession() {
                 points: null
             }
         },
-        imgURL: '',
-        // isOn: false
+        endedAt: null
     }
 }
+
+
+
+// async function getById(id) {
+//     try {
+//         return await httpService.get(`gameSession/${id}`);
+//     } catch (err) {
+//         console.log('Error in getById (front gameService):', err);
+//         throw err;
+//     }
+// }
+
+
+// async function saveImg(dataURL) {
+//     let gameSessionToEdit = await _getCurrSession();
+//     gameSessionToEdit.imgURL = dataURL;
+//     return await saveGameSession(gameSessionToEdit);
+// }
+
+
+// imgURL: '',
+// isOn: false
